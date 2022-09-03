@@ -1,31 +1,33 @@
 package com.example.tasktest
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import com.example.tasktest.ui.main.SectionsPagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.example.tasktest.databinding.ActivityMainBinding
+import com.example.tasktest.viewpager.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val tabNames: Array<String> = arrayOf(
+            getString(R.string.simple_numbers_text),
+            getString(R.string.fibonacci_numbers_text)
+        )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val viewPager: ViewPager2 = binding.viewPager
+        viewPager.adapter = ViewPagerAdapter(this)
+        val tabLayout: TabLayout = binding.tabs
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = binding.viewPager
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabs
-        tabs.setupWithViewPager(viewPager)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabNames[position]
+        }.attach()
 
     }
 }
