@@ -18,20 +18,26 @@ import com.example.tasktest.databinding.FragmentMainBinding
 import com.example.tasktest.ui.recycler.DataModel
 import com.example.tasktest.ui.recycler.OnScrollListener
 import com.example.tasktest.ui.recycler.RecyclerAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class PlaceholderFragment : Fragment() {
 
-    private lateinit var pageViewModel: PageViewModel
+
+
+    //private lateinit var pageViewModel: PageViewModel
     private var _binding: FragmentMainBinding? = null
     private lateinit var  recyclerAdapter: RecyclerAdapter
     private var dataList = mutableListOf<DataModel>()
     var startNumber=3
-    private val PagesViewModel by viewModels<PageViewModel> {
-        ViewModelFactory(requireContext())
-    }
+
+    private val vm by viewModel<PageViewModel>()
+
+//    private val PagesViewModel by viewModels<PageViewModel> {
+//        ViewModelFactory(requireContext())
+//    }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -39,34 +45,33 @@ class PlaceholderFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
+       /*pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
+        }*/
+        vm.setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root = binding.root
-        var gridLayoutManager = GridLayoutManager(requireActivity(),2)
+        var gridLayoutManager = GridLayoutManager(root.context,2)
         binding.recyclerView.layoutManager=gridLayoutManager
         recyclerAdapter = RecyclerAdapter()//aplicationContext
         binding.recyclerView.adapter = recyclerAdapter
 
-        Log.e("Загружаю","${startNumber}-${startNumber}")
-        //pageViewModel.updateDataList(startNumber+100)
-        //startNumber+=100
+        Log.e("Загружаю1","${startNumber}-${startNumber}")
 
-        dataList.add(DataModel(2,BLUE))
+        dataList.add(DataModel(2,0))
+
         recyclerAdapter.submitList(dataList)
        // binding.recyclerView.addOnScrollListener(OnScrollListener(gridLayoutManager, recyclerAdapter, dataList))
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             var previousTotal = 0
             var loading = true
-            val visibleThreshold = 10
             var firstVisibleItem = 0
             var visibleItemCount = 0
             var totalItemCount = 0
@@ -85,19 +90,18 @@ class PlaceholderFragment : Fragment() {
                 }
 
                 if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-                    val initialSize = dataList.size
-                    Log.e("Загружаю","${startNumber}-${startNumber}")
-                    pageViewModel.updateDataList(startNumber+100)
-                    startNumber+=100
-                    //val updatedSize = dataList.size
-                    //recyclerView.post { recyclerAdapter.notifyItemRangeInserted(initialSize, updatedSize) }
-                    loading = true
+
+                        Log.e("Загружаю", "${startNumber}-${startNumber}")
+                        vm.launchDataLoad(startNumber + 100)//Вынести старт намбер в вью модел
+                        startNumber += 100
+                        loading = true
+
                 }
             }
         })
 
 
-        pageViewModel.results.observe(viewLifecycleOwner) {
+        vm.results.observe(viewLifecycleOwner) {
             it?.let {
                 dataList= dataList.plus(it) as MutableList<DataModel>
                 recyclerAdapter.submitList(dataList)
@@ -110,6 +114,10 @@ class PlaceholderFragment : Fragment() {
     }
 
     companion object {
+
+
+        private const val visibleThreshold = 10
+
         /**
          * The fragment argument representing the section number for this
          * fragment.

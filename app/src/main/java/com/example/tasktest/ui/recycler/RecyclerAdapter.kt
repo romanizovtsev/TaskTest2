@@ -1,4 +1,6 @@
 package com.example.tasktest.ui.recycler
+import android.graphics.Color.*
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +14,13 @@ import com.example.tasktest.R
 
 class RecyclerAdapter() :
     ListAdapter<DataModel, RecyclerAdapter.ViewHolder>(DiffCallback) {
+    public var a: Int = 0
+
+    private var prev = true
 
     /* ViewHolder for Flower, takes in the inflated view and the onClick behavior. */
-    class ViewHolder(itemView: View) :
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
         private var currentNumber: DataModel? = null
         private val NumberTextView: TextView = itemView.findViewById(R.id.number)
 
@@ -24,10 +28,25 @@ class RecyclerAdapter() :
         /* Bind flower name and image. */
         fun bind(number: DataModel) {
             currentNumber = number
-
-
-
             NumberTextView.text = number.number.toString()
+
+//            if (prev) {
+//                NumberTextView.setBackgroundColor(GRAY)
+//                prev=!prev
+//                Log.e("Даем цвет","Цвет")
+//            }
+            Log.e("Красим", "id =${number.id}; число = ${number.number}")
+            when (number.id)
+            {
+                0->NumberTextView.setBackgroundColor(GRAY)
+                3->NumberTextView.setBackgroundColor(GRAY)
+                1->NumberTextView.setBackgroundColor(WHITE)
+                2->NumberTextView.setBackgroundColor(WHITE)
+            }
+
+
+
+
         }
     }
 
@@ -52,6 +71,6 @@ object DiffCallback : DiffUtil.ItemCallback<DataModel>() {
     }
 
     override fun areContentsTheSame(oldItem: DataModel, newItem: DataModel): Boolean {
-        return oldItem.number == newItem.number
+        return oldItem == newItem
     }
 }
