@@ -18,7 +18,7 @@ class OnScrollListener(
         super.onScrolled(recyclerView, dx, dy)
         visibleItemCount = recyclerView.childCount
         totalItemCount = layoutManager.itemCount
-        firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+        firstVisibleItem = layoutManager.findFirstVisibleItemPosition()+2
 
         if (loading) {
             if (totalItemCount > previousTotal) {
@@ -34,6 +34,6 @@ class OnScrollListener(
     }
 
     private companion object {
-        private const val VISIBLE_THRESHOLD = 17
+        private const val VISIBLE_THRESHOLD = 30
     }
 }

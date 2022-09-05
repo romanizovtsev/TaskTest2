@@ -26,7 +26,7 @@ class FibonacciNumbersFragment : Fragment() {
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root = binding.root
-        val gridLayoutManager = GridLayoutManager(root.context, 2)
+        val gridLayoutManager = GridLayoutManager(root.context, NUMBER_OF_COLUMNS)
         binding.recyclerView.layoutManager = gridLayoutManager
         binding.recyclerView.adapter = recyclerAdapter
 
@@ -65,5 +65,6 @@ class FibonacciNumbersFragment : Fragment() {
 
     private companion object {
         private const val BUNDLE_TAG = "isOpenedBefore"
+        private const val NUMBER_OF_COLUMNS = 3
     }
 }

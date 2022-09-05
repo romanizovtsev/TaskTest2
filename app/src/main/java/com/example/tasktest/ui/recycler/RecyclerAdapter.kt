@@ -25,12 +25,11 @@ class RecyclerAdapter :
             currentNumber = number
             numberTextView.text = number.number.toString()
 
-            when (number.id) {
-                ZERO_POSITION -> numberTextView.setBackgroundColor(GRAY)
-                THIRD_POSITION -> numberTextView.setBackgroundColor(GRAY)
-                FIRST_POSITION -> numberTextView.setBackgroundColor(WHITE)
-                SECOND_POSITION -> numberTextView.setBackgroundColor(WHITE)
-            }
+            if(number.id%2==0)
+                numberTextView.setBackgroundColor(WHITE)
+            else
+                numberTextView.setBackgroundColor(GRAY)
+
         }
     }
 
@@ -45,12 +44,6 @@ class RecyclerAdapter :
         holder.bind(number)
     }
 
-    private companion object {
-        private const val ZERO_POSITION = 0
-        private const val FIRST_POSITION = 1
-        private const val SECOND_POSITION = 2
-        private const val THIRD_POSITION = 3
-    }
 }
 
 object DiffCallback : DiffUtil.ItemCallback<NumberModel>() {

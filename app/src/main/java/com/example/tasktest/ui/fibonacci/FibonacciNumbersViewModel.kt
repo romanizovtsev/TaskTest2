@@ -2,7 +2,6 @@ package com.example.tasktest.ui.fibonacci
 
 
 import androidx.lifecycle.*
-import com.example.tasktest.domain.entity.PackageData
 import com.example.tasktest.manager.NumberGeneratorManager
 import com.example.tasktest.ui.model.NumberModel
 import kotlinx.coroutines.*

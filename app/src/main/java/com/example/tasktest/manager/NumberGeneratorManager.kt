@@ -62,6 +62,6 @@ class NumberGeneratorManager {
     private companion object {
         private const val SIZE_OF_FIBONACCI_NUMBERS = 20
         private const val RANGE_OF_SIMPLE_NUMBERS = 100L
-        private const val MAX_ID = 3
+        private const val MAX_ID = 5
     }
 }
