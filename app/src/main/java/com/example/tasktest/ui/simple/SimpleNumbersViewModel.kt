@@ -24,7 +24,7 @@ class SimpleNumbersViewModel : ViewModel() {
     private val scope = CoroutineScope(Dispatchers.Default + viewModelJob)
 
     fun setFirstData() {
-        dataList.add(NumberModel(BigDecimal.ZERO, 0))
+        dataList.add(NumberModel(BigDecimal(2L), 0))
         _results.postValue(dataList)
     }
 
