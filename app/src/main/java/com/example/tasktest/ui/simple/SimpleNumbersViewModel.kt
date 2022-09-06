@@ -44,6 +44,6 @@ class SimpleNumbersViewModel : ViewModel() {
     }
 
     private companion object {
-        private const val RANGE_OF_SIMPLE_NUMBERS = 100L
+        private const val RANGE_OF_SIMPLE_NUMBERS = 150L
     }
 }
